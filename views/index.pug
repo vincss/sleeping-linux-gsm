@@ -1,0 +1,14 @@
+html
+    head
+        title= title
+    body
+        h1 ValZur Status
+        h3 Current Status #{serverStatus.status}
+        h4 Detail
+        hr
+        pre= serverStatus.detail
+        hr
+        h3 Actions
+        a(class='button', href='/wakeup') WakeUp
+        br
+        a(class='button', href='/sleep') Sleep
