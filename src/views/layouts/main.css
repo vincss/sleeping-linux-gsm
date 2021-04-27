@@ -1,0 +1,36 @@
+
+.bodyStyle {    
+    color:#FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    height: 100vh;
+    
+    text-align: center;
+    background-color: grey;
+}
+
+.bodyContainer {
+    width: 100%;
+}
+
+.homeContainer {
+    margin: 25px;
+}
+
+.homeCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: start;
+}
+
+.imageContainer {
+    margin: 10px;
+}
+
+.startButton {    
+    border: 2px darkgrey solid;
+    margin: 5px;
+}
