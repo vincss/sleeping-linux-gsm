@@ -1,13 +1,68 @@
+<script>
+    const REFRESH_INTERVAL = 2000;
+
+    startClick = (displayName) => {
+        console.log('WakeUp', displayName);
+        
+        $.post('/wakeup', {displayName} )
+            .done( (sucess) => { console.log('WakeUp Sucess', sucess); })
+            .fail( (error) => { console.log('WakeUp Error', error); } )            
+    };
+
+    getEmoji = (status) => {
+        let emoji = '🟥'
+        switch (status) {
+            case 'Online':
+                emoji = '🟩'
+                break;
+            case 'Sleeping':
+                emoji = '💤'
+                break;
+            case 'Starting':
+                emoji = '🟧'
+                break;
+        }
+        return emoji;
+    };
+
+    getStatus = () => {
+        $.get('/status')
+            .done(
+                (status) => {
+                    status.forEach( curStatus => {
+                        const state = curStatus.serverStatus
+                        //console.log(`${new Date().toISOString()} - stat `, curStatus.displayName,state, curStatus);
+                        $(`#status-${curStatus.displayName}`).text(`${getEmoji(state)} ${state} ${getEmoji(state)}`);
+                    } );
+                    
+                })
+            .fail((error) => { $('#server-status').text('🛑 Offline 🛑'); })
+    };
+
+
+    homeLoaded = () => {
+        const toto = {{{ json servers }}};
+        console.log('HomeLoaded', toto);
+        getStatus();
+        setInterval(getStatus, REFRESH_INTERVAL);
+
+    }
+    homeLoaded();
+
+</script>
 <div class="homeContainer">
+
     <div class="homeCenter">
-        <div>
-            <img alt="FavIcon" class="imageContainer" src={{favIcon}}>
+        {{#each servers}}
+        <div class="gameContainer">
+            <h4> {{displayName}} </h4>
+            <div id='status-{{displayName}}'> ...Status... </div>
+            <pre id='detail-{{displayName}}'> ...Detail... </pre>
+            <div class="buttonContainer">
+                <button id='button-{{displayName}}' class="button secondary startButton" onclick=" startClick('{{displayName}}') ">Wake Me Up</button>
+            </div>
         </div>
-        <div>
-            <div> {{ title }} </div>
-        </div>
+        {{/each}}
     </div>
-    <div class="buttonContainer">
-        <button class="button secondary startButton" onclick=" startClick() ">Wake Me Up</button>
-    </div>
+    
 </div>

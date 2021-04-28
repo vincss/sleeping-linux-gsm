@@ -1,17 +1,28 @@
 
-.bodyStyle {    
-    color:#FFFFFF;
+.headerContainer {
+    display: flex;
+    align-items: center;    
+    text-align: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.bodyStyle {
+    color: #bd7f3a;
+    font-family: 'pt serif',georgia;
+
+  }
+
+.bodyContainer {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;    
     height: 100vh;
     
     text-align: center;
-    background-color: grey;
-}
-
-.bodyContainer {
-    width: 100%;
+    background-color: #1E2637;
 }
 
 .homeContainer {
@@ -22,7 +33,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: start;
+}
 
+.gameContainer {
+    height: 200px;
+    width: 250px;
+    border: 2px solid gray;    
+    border-radius: 5px;
+    margin: 5px;
+    /* background-color: lightgray; */
+    background-color: white;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: start;
 }
 
