@@ -14,7 +14,7 @@ What it does :
 
 You can either :
  * Use it from binaries (easiest) :
-    * Download [the latest release](./releases)
+    * Download [the latest release](https://github.com/vincss/sleeping-linux-gsm/releases)
     * Launch the executable.
  * From source (advanced) :
     * Get the latest node lts
@@ -23,5 +23,4 @@ You can either :
     * Start the server : 'npm start'
 
 Configuration :
-    * At the first launch a settings.yml file will be created. 
-        [See settings.yml](./settings.yml) 
+    * At the first launch a settings.yml file will be created. [See settings.yml](./settings.yml) 
