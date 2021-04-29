@@ -12,6 +12,9 @@ What it does :
 
 ## How To use
 
+### ! Important !
+The user that will run this web-server needs to have the permission to launch the command in the settings file.
+
 You can either :
  * Use it from binaries (easiest) :
     * Download [the latest release](https://github.com/vincss/sleeping-linux-gsm/releases)
