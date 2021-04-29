@@ -1,1 +1,9 @@
+# Install
 node_modules/
+
+# Execution related
+log/
+
+# Generated
+bin/
+build/

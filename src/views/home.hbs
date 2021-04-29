@@ -1,0 +1,78 @@
+<script>
+    const REFRESH_INTERVAL = 2000;
+
+    startClick = (displayName) => {
+        console.log('WakeUp', displayName);
+        
+        $.post('/wakeup', {displayName} )
+            .done( (sucess) => { console.log('WakeUp Sucess', sucess); })
+            .fail( (error) => { console.log('WakeUp Error', error); } )            
+    };
+
+    stopClick = (displayName) => {
+        console.log('Sleeping', displayName);
+
+        $.post('/sleep', { displayName })
+            .done((sucess) => { console.log('Sleep Sucess', sucess); })
+            .fail((error) => { console.log('Sleep Error', error); })
+    };
+
+    getEmoji = (status) => {
+        let emoji = '🟥'
+        switch (status) {
+            case 'Online':
+                emoji = '🟩'
+                break;
+            case 'Sleeping':
+                emoji = '💤'
+                break;
+            case 'Stopping':
+            case 'Starting':
+                emoji = '🟧'
+                break;
+        }
+        return emoji;
+    };
+
+    getStatus = () => {
+        $.get('/status')
+            .done(
+                (status) => {
+                    status.forEach( curStatus => {
+                        const state = curStatus.serverStatus
+                        //console.log(`${new Date().toISOString()} - stat `, curStatus.displayName,state, curStatus);
+                        $(`#status-${curStatus.displayName}`).text(`${getEmoji(state)} ${state} ${getEmoji(state)}`);
+                        // $(`#status-${curStatus.displayName}`).text(`${curStatus.detail}`);
+                    } );
+                    
+                })
+            .fail((error) => { $('#server-status').text('🛑 Offline 🛑'); })
+    };
+
+
+    homeLoaded = () => {
+        const toto = {{{ json servers }}};
+        console.log('HomeLoaded', toto);
+        getStatus();
+        setInterval(getStatus, REFRESH_INTERVAL);
+    }
+    homeLoaded();
+
+</script>
+<div class="homeContainer">
+
+    <div class="homeCenter">
+        {{#each servers}}
+        <div class="gameContainer">
+            <h4> {{displayName}} </h4>
+            <div id='status-{{displayName}}'> ...Status... </div>
+            {{!-- <pre id='detail-{{displayName}}'> ...Detail... </pre> --}}
+            <div class="buttonContainer">
+                <button id='button-start-{{displayName}}' class="button buttonsStyle" onclick=" startClick('{{displayName}}') ">Wake Up</button>
+                <button id='button-stop-{{displayName}}' class="button buttonsStyle" onclick=" stopClick('{{displayName}}') ">Sleep</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    
+</div>
