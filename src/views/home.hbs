@@ -9,6 +9,14 @@
             .fail( (error) => { console.log('WakeUp Error', error); } )            
     };
 
+    stopClick = (displayName) => {
+        console.log('Sleeping', displayName);
+
+        $.post('/sleep', { displayName })
+            .done((sucess) => { console.log('Sleep Sucess', sucess); })
+            .fail((error) => { console.log('Sleep Error', error); })
+    };
+
     getEmoji = (status) => {
         let emoji = '🟥'
         switch (status) {
@@ -18,6 +26,7 @@
             case 'Sleeping':
                 emoji = '💤'
                 break;
+            case 'Stopping':
             case 'Starting':
                 emoji = '🟧'
                 break;
@@ -33,6 +42,7 @@
                         const state = curStatus.serverStatus
                         //console.log(`${new Date().toISOString()} - stat `, curStatus.displayName,state, curStatus);
                         $(`#status-${curStatus.displayName}`).text(`${getEmoji(state)} ${state} ${getEmoji(state)}`);
+                        // $(`#status-${curStatus.displayName}`).text(`${curStatus.detail}`);
                     } );
                     
                 })
@@ -45,7 +55,6 @@
         console.log('HomeLoaded', toto);
         getStatus();
         setInterval(getStatus, REFRESH_INTERVAL);
-
     }
     homeLoaded();
 
@@ -57,9 +66,10 @@
         <div class="gameContainer">
             <h4> {{displayName}} </h4>
             <div id='status-{{displayName}}'> ...Status... </div>
-            <pre id='detail-{{displayName}}'> ...Detail... </pre>
+            {{!-- <pre id='detail-{{displayName}}'> ...Detail... </pre> --}}
             <div class="buttonContainer">
-                <button id='button-{{displayName}}' class="button secondary startButton" onclick=" startClick('{{displayName}}') ">Wake Me Up</button>
+                <button id='button-start-{{displayName}}' class="button buttonsStyle" onclick=" startClick('{{displayName}}') ">Wake Up</button>
+                <button id='button-stop-{{displayName}}' class="button buttonsStyle" onclick=" stopClick('{{displayName}}') ">Sleep</button>
             </div>
         </div>
         {{/each}}
