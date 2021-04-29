@@ -5,9 +5,9 @@ name: Commit Build
 
 on:
   push:
-    branches: [ master, feature/* , chore/* ]
+    branches: [ main, feature/* , chore/* ]
   pull_request:
-    branches: [ master, feature/* , chore/* ]
+    branches: [ main, feature/* , chore/* ]
 
 jobs:
   build:
