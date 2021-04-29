@@ -1,25 +1,36 @@
 {
   "name": "sleep-linux-gsm",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Put your server to rest while no one is using it",
+  "bin": "build/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "debug": "nodemon"
+    "debug": "nodemon",
+    "prebuild": "rimraf ./build/ ./bin/ && cpx \"src/views/**/*.*\" build/src/views",
+    "build": "npm-run-all build:*",
+    "build:typescript": "tsc",
+    "build:win": "pkg build/src/index.js --config package.json --target win --output bin/sleeping-linux-gsm.exe",
+    "build:linux": "pkg build/src/index.js --config package.json --target linux --output bin/sleeping-linux-gsm.run"
   },
-  "author": "",
+  "author": "vincss",
   "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.0",
+    "js-yaml": "^4.1.0",
+    "winston": "^3.3.3"
+  },
   "devDependencies": {
     "@types/express": "^4.17.11",
     "@types/express-handlebars": "^3.1.0",
     "@types/js-yaml": "^4.0.1",
     "@types/node": "^14.14.35",
-    "express": "^4.17.1",
-    "express-handlebars": "^5.3.0",
-    "js-yaml": "^4.1.0",
+    "cpx": "^1.5.0",
     "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "pkg": "^5.1.0",
+    "rimraf": "^3.0.2",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3",
-    "winston": "^3.3.3"
+    "typescript": "^4.2.3"
   }
 }

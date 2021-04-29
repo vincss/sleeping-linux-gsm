@@ -12,7 +12,7 @@ export type LoggerType = typeof DefaultLogger;
 let logger = DefaultLogger;
 let initialized = false;
 
-const logFolder = 'logs/';
+const logFolder = 'log/';
 
 export const getLogger = () : LoggerType => {
     try {
