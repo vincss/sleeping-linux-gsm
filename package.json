@@ -10,8 +10,8 @@
     "prebuild": "rimraf ./build/ ./bin/ && cpx-fixed \"./views/**/*.*\" ./build/views",
     "build": "npm-run-all build:*",
     "build:typescript": "tsc",
-    "build:win": "pkg build/src/index.js --config package.json --target node14-win-x64 --output bin/sleeping-linux-gsm.exe",
-    "build:linux": "pkg build/src/index.js --config package.json --target node14-linux-x64 --output bin/sleeping-linux-gsm.run"
+    "build:win": "pkg build/index.js --config package.json --target node14-win-x64 --output bin/sleeping-linux-gsm.exe",
+    "build:linux": "pkg build/index.js --config package.json --target node14-linux-x64 --output bin/sleeping-linux-gsm.run"
   },
   "author": "vincss",
   "license": "ISC",
