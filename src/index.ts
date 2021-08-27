@@ -1,7 +1,8 @@
 import { getLogger } from './logger';
-import { version } from '../package.json';
-import { Web } from './web';
 import { Settings, SettingsInfo } from './settings';
+import { Web } from './web';
+
+const { version } = require('../package.json');
 
 const logger = getLogger();
 
@@ -11,16 +12,16 @@ function setupFallBacks() {
         main.close();
         process.exit(0);
     });
-    
+
     process.on('SIGTERM', async () => {
         logger.info('SIGTERM  signal received.');
         main.close();
         process.exit(0);
     });
-    
+
     process.on('uncaughtException', function (err: any) {
         logger.warn(`Caught uncaughtException: ${JSON.stringify(err)}`);
-    
+
         if (err.code === 'ECONNRESET') {
             logger.info('Connection reset client side... Keep on going.');
             return;
@@ -33,7 +34,7 @@ function setupFallBacks() {
         ) {
             logger.error('Something bad happened', err.message);
         }
-    
+
         main.close();
         logger.info('...Exiting...');
         process.exit(1);
@@ -42,21 +43,21 @@ function setupFallBacks() {
 
 class Main {
 
-    web : Web;
-    settings : SettingsInfo;
+    web: Web;
+    settings: SettingsInfo;
 
     constructor() {
-        
+
         const msg = `... A new story begin v${version} ...`;
-        const separator = msg.replace(/./g,'.');
+        const separator = msg.replace(/./g, '.');
         logger.info(separator);
         logger.info(msg);
         logger.info(separator)
-        this.settings= Settings.getSettings();
+        this.settings = Settings.getSettings();
         this.web = new Web(this.settings);
     }
-    
-    init(){
+
+    init() {
         this.web.init();
     }
 
