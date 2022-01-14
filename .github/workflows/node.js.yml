@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -31,9 +31,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: 'Binary Windows'
-        path: bin/sleeping-linux-gsm.exe
+        path: bin/sleep-linux-gsm-win.exe
     - name: 'Upload Artifact Linux'
       uses: actions/upload-artifact@v2
       with:
         name: 'Binary Linux'
-        path: bin/sleeping-linux-gsm.run
+        path: bin/sleep-linux-gsm-linux

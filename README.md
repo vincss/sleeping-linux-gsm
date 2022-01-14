@@ -30,7 +30,9 @@ Configuration :
     * At the first launch a settings.yml file will be created. [See settings.yml](./settings.yml) 
 
 ### Change Log
- * 0.0.2
+ * 0.0.3
+    * Compress binaries 
+* 0.0.2
     * Fix binary version
  * 0.0.1
     * Initial version
