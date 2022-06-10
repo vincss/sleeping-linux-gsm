@@ -11,15 +11,16 @@ export type ServerInfo = {
     displayName: string;
     port: number;
     startCmd: string;
+    asyncStart: boolean;
     stopCmd: string;
-    workingDirectory: string;
+    workingDirectory: string;    
 }
 
 export type SettingsInfo = {
     webPort: number;
     pageTitle: string;
     favIcon: string;
-    statusCmd : string;
+    statusCmd: string;
     servers: ServerInfo[],
 }
 
@@ -32,6 +33,7 @@ const DefaultSettings: SettingsInfo = {
         displayName: 'Valheim',
         port: 2456,
         startCmd: './vhserver start',
+        asyncStart: false,
         stopCmd: './vhserver stop',
         workingDirectory: '/home/vhserver'
     }
@@ -43,16 +45,16 @@ const logger = getLogger();
 export class Settings {
 
     static getSettings() {
-        let settings = {...DefaultSettings}
+        let settings = { ...DefaultSettings }
         try {
             const read = readFileSync(SettingFilePath).toString();
             const settingsFromFiles = load(read) as Settings;
             settings = { ...DefaultSettings, ...settingsFromFiles };
-        } catch (error) {
-            logger.error('Failed to load setting, using default.', error.message);
+        } catch (error: any) {
+            logger.error('Failed to load setting, using default.', error?.message);
             Settings.saveDefault();
-        }    
-        logger.info(`Retrieved settings:${JSON.stringify( {...settings, favIcon: '...'})}`);
+        }
+        logger.info(`Retrieved settings:${JSON.stringify({ ...settings, favIcon: '...' })}`);
         return settings;
     }
 
@@ -60,8 +62,8 @@ export class Settings {
         try {
             const yamlToWrite = dump(DefaultSettings);
             writeFileSync(SettingFilePath, yamlToWrite)
-        } catch (error) {
-            logger.error('Failed to write setting.', error.message);
+        } catch (error: any) {
+            logger.error('Failed to write setting.', error?.message);
         }
     }
 }

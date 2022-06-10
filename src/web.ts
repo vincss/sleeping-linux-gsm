@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import exphbs from 'express-handlebars';
 import * as http from 'http';
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import path from 'path';
 
 import { PORT_REPLACEMENT, ServerInfo, SettingsInfo } from './settings';
@@ -14,7 +14,7 @@ export class Web {
     app: Express;
     server?: http.Server;
     logger: LoggerType;
-    serversCmd : Record<string,ServerStatus | undefined> = {};
+    serversCmd: Record<string, ServerStatus | undefined> = {};
 
     constructor(settings: SettingsInfo) {
         this.settings = settings;
@@ -76,13 +76,24 @@ export class Web {
     }
 
     wakeUp(server: ServerInfo) {
-        this.logger.info('WakingUp ' + server.displayName);
+        this.logger.info(`WakingUp ${server.displayName}`);
         try {
-            const result = execSync(server.startCmd, { cwd: server.workingDirectory }).toString();
-            this.logger.info('WakeUp Result ' + result);
+            if (server.asyncStart) {
+                const cmdArgs = server.startCmd.split(' ');
+                const exec = cmdArgs.splice(0, 1)[0];
+                const result = spawn(exec, cmdArgs, {
+                    stdio: 'inherit',
+                    cwd: server.workingDirectory ?? process.cwd()
+                });
+                this.logger.info(`WakeUp Async Result ${result}`);
+            } else {
+                const result = execSync(server.startCmd, { cwd: server.workingDirectory }).toString();
+                this.logger.info(`WakeUp Result ${result}`);
+            }
+
         }
-        catch (error) {
-            this.logger.info('WakeUp Error ' + error.message);
+        catch (error: any) {
+            this.logger.info('WakeUp Error ' + error?.message);
         }
     }
 
@@ -92,8 +103,8 @@ export class Web {
             const result = execSync(server.stopCmd, { cwd: server.workingDirectory }).toString();
             this.logger.info('Sleep Result ' + result);
         }
-        catch (error) {
-            this.logger.info('Sleep Error ' + error.message);
+        catch (error: any) {
+            this.logger.info('Sleep Error ' + error?.message);
         }
     }
 
@@ -112,21 +123,21 @@ export class Web {
             // this.logger.info(`Error on command [${cmd}] : ${err.message}`)            
         }
 
-        if(this.serversCmd[serv.displayName] === ServerStatus.Starting 
-            && state.serverStatus === ServerStatus.Sleeping ) {
-                state.serverStatus = ServerStatus.Starting;
+        if (this.serversCmd[serv.displayName] === ServerStatus.Starting
+            && state.serverStatus === ServerStatus.Sleeping) {
+            state.serverStatus = ServerStatus.Starting;
         }
-        if(this.serversCmd[serv.displayName] === ServerStatus.Starting 
-            && state.serverStatus === ServerStatus.Online ) {
-                this.serversCmd[serv.displayName] = undefined;
+        if (this.serversCmd[serv.displayName] === ServerStatus.Starting
+            && state.serverStatus === ServerStatus.Online) {
+            this.serversCmd[serv.displayName] = undefined;
         }
-        if(this.serversCmd[serv.displayName] === ServerStatus.Stopping 
-            && state.serverStatus === ServerStatus.Online ) {
-                state.serverStatus = ServerStatus.Stopping;
+        if (this.serversCmd[serv.displayName] === ServerStatus.Stopping
+            && state.serverStatus === ServerStatus.Online) {
+            state.serverStatus = ServerStatus.Stopping;
         }
-        if(this.serversCmd[serv.displayName] === ServerStatus.Stopping 
-            && state.serverStatus === ServerStatus.Sleeping ) {
-                this.serversCmd[serv.displayName] = undefined;
+        if (this.serversCmd[serv.displayName] === ServerStatus.Stopping
+            && state.serverStatus === ServerStatus.Sleeping) {
+            this.serversCmd[serv.displayName] = undefined;
         }
 
         return state;
