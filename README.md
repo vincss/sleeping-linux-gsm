@@ -30,6 +30,8 @@ Configuration :
     * At the first launch a settings.yml file will be created. [See settings.yml](./settings.yml) 
 
 ### Change Log
+ * 0.0.4
+    * Add asyncStart, for V-Rising under Wine support
  * 0.0.3
     * Compress binaries 
 * 0.0.2
