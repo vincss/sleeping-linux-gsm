@@ -7,3 +7,5 @@ log/
 # Generated
 bin/
 build/
+
+.idea/

@@ -20,7 +20,7 @@ function setupFallBacks() {
     });
 
     process.on('uncaughtException', function (err: any) {
-        logger.warn(`Caught uncaughtException: ${JSON.stringify(err)}`);
+        logger.warn(`Caught uncaughtException:` ,err);
 
         if (err.code === 'ECONNRESET') {
             logger.info('Connection reset client side... Keep on going.');
