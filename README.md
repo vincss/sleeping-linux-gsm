@@ -30,6 +30,8 @@ Configuration :
     * At the first launch a settings.yml file will be created. [See settings.yml](./settings.yml) 
 
 ### Change Log
+* 0.0.6
+    * Update packages 
  * 0.0.5
     * Update packages ( @yao-pkg/pkg )
  * 0.0.4

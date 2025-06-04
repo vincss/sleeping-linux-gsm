@@ -1,6 +1,6 @@
 {
   "name": "sleep-linux-gsm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Put your server to rest while no one is using it",
   "bin": "build/index.js",
   "main": "build/index.js",
